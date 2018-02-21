@@ -92,9 +92,8 @@ public class MovieAdaptor extends BaseAdapter {
         characterTextView.setTextSize(14);
         characterTextView.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimaryDark));
 
-        hasSeenTextView.setText("Has seen??");
-        hasSeenTextView.setTextSize(11);
-        hasSeenTextView.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+        hasSeenTextView.setText(movie.hasSeen);
+        hasSeenTextView.setTextSize(10);
 
         Picasso.with(mContext).load(movie.poster).into(thumbnailImageView);
         return convertView;

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private Context mContext;
     public TextView resultTextView;
+    private ArrayList<Movie> movieList;
+    private MovieAdaptor adaptor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
         //data to display
-        final ArrayList<Movie> movieList = Movie.getMoviesFromFile
-                ("movies.json", this);
+        movieList = Movie.getMoviesFromFile("movies.json", this);
         //create adaptor
-        MovieAdaptor adaptor = new MovieAdaptor(this, movieList);
+        adaptor = new MovieAdaptor(this, movieList);
 
         resultTextView = findViewById(R.id.has_seen);
 
@@ -43,50 +44,52 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent detailIntent = new Intent(mContext, MovieDetailActivity.class);
                 detailIntent.putExtra("title", selectedMovie.title);
-                //detailIntent.putExtra("main_characters", selectedMovie.main_characters.toString());
+                detailIntent.putExtra("description", selectedMovie.description);
+                detailIntent.putExtra("poster", selectedMovie.poster);
+                detailIntent.putExtra("main_characters", selectedMovie.main_characters.toString());
                 detailIntent.putExtra("url", selectedMovie.url);
+                detailIntent.putExtra("position", position);
 
-                startActivity(detailIntent);
+                launchActivity(detailIntent);
+                //startActivityForResult(detailIntent, 1);
             }
         });
     }
 
-    public void launchActivity() {
-        // 1. intent with from and to
-        Intent intent = new Intent(mContext, MovieDetailActivity.class);
-        // 2. add data to the intent
-        //intent.putExtra("username", username.getText().toString());
-        // 3. start activity with the intent
-        //startActivity(intent);
-        startActivityForResult(intent, 1);
-    }
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1) {
-            if(resultCode ==RESULT_OK) {
-                boolean hasSeen = data.getBooleanExtra("seenIt", false);
-                boolean wantToSee = data.getBooleanExtra("wantToSee", false);
-                boolean doNotLike = data.getBooleanExtra("doNotLike", false);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) { // SECOND ACTIVITY IS SENDING DATA
 
-                //check to see which box has been selected
-                //then display different string in the text view
+                final int position = data.getIntExtra("position", -1);
+                //int position = data.getExtras().getInt("has_seen_position");
 
-                if(hasSeen & !wantToSee & !doNotLike) {
-                    resultTextView.setText("Has seen");
+                boolean seenIt = data.getBooleanExtra("button1", false);
+                boolean wantToSee = data.getBooleanExtra("button2", false);
+                boolean doNotLike = data.getBooleanExtra("button3", false);
+
+                // check to see which box has been selected
+                // then display different strings in the text view
+
+                if (seenIt){
+                    movieList.get(position).hasSeen="Has seen";
                 }
-                else if(!hasSeen & wantToSee & !doNotLike) {
-                    resultTextView.setText("Wants to see");
+
+                else if (wantToSee){
+                    movieList.get(position).hasSeen="Wants to see";
                 }
-                else if(!hasSeen & !wantToSee & doNotLike) {
-                    resultTextView.setText("Does not like");
+
+                else if(doNotLike){
+                    movieList.get(position).hasSeen="Does not like";
                 }
-                else {
-                    resultTextView.setText("Has seen?");
-                }
+                adaptor.notifyDataSetChanged();
             }
         }
     }
 
+    public void launchActivity(Intent intent) {
+        startActivityForResult(intent, 1);
+    }
 }

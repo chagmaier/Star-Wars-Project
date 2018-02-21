@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <ImageView
         android:id="@+id/movie_list_thumbnail"
@@ -16,15 +16,16 @@
         android:layout_marginBottom="6dp"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
-        app:srcCompat="@mipmap/ic_launcher"
         android:contentDescription="@string/thumbnail"/>
 
     <RelativeLayout
         android:id="@+id/movie_list_text_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@mipmap/ic_launcher"
         android:layout_toEndOf="@+id/movie_list_thumbnail">
+
 
         <TextView
             android:id="@+id/movie_list_title"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-
+            android:layout_gravity="center_horizontal"
             android:textSize="18sp"
             android:text="Movie name" />
 
@@ -44,6 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="3dp"
+            android:layout_gravity="center_horizontal"
             android:maxLines="3"
             android:textSize="13sp"
             android:text="Description" />
@@ -56,6 +58,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="3dp"
+            android:layout_gravity="center_horizontal"
             android:maxLines="3"
             android:textSize="10sp"
             android:text="Main Characters" />
@@ -67,9 +70,11 @@
             android:layout_below="@id/movie_list_characters"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="3dp"
             android:textSize="10sp"
             android:text="Has/has not seen" />
     </RelativeLayout>
+
 
 </RelativeLayout>
